@@ -4,23 +4,40 @@ Dove is a tool for quickly managing projects in a shell like an IDE
 
 ## Usage
 
-    Use this pattern when using in a shell: `dove [flags] <command or option> [arguments]`
+Use this pattern when using in a shell:
+
+`dove [flags] <command or option> [arguments]`
+
+### To run dove from a directory
+
+```shell
+$chmod +x /path/to/dove_dir/dove.py
+$/path/to/dove_dir/dove.py [command] [arguments..]
+```
+
+### To install for user
+
+`./install`
+
+### To install for all (root)
+
+`sudo ./install`
 
 ## Available Commands
 
-    build, -b, --build       compile packages and dependencies
-    analyse, -a, --analyse   checks for any errors or warnings in file(s)
-    clean, -c, --clean       remove compiled/object files and cached files
-    doc, -d, --doc           show documentation for an object in file
-    run, -r, --run           run program and compile if required
-    walk, -w, --walk         compile and run program
-    test, -t, --test         run tests
-    env, -e, --env           print Dove's workspace environment information
-    reset, -r, --reset       reset Dove's preferences & environment to default
-    tree, -l, --tree, --list list project files & directories as tree
-    ext, -ext, --ext         manage extensions
-    info, -i, --info         print Dove's information
-    update, -u, --update     update dove and extensions
-    switch, -s, --switch     check or switch Dove's current language mode
-    fix, -f, --fix           fixes Dove's preferences
-    -v, --verbose            increase output verbosity
+1. build, -b, --build       compile packages and dependencies
+1. analyse, -a, --analyse   checks for any errors or warnings in file(s)
+1. clean, -c, --clean       remove compiled/object files and cached files
+1. doc, -d, --doc           show documentation for an object in file
+1. run, -r, --run           run program and compile if required
+1. walk, -w, --walk         compile and run program
+1. test, -t, --test         run tests
+1. env, -e, --env           print Dove's workspace environment information
+1. reset, -r, --reset       reset Dove's preferences & environment to default
+1. tree, -l, --tree, --list list project files & directories as tree
+1. ext, -ext, --ext         manage extensions
+1. info, -i, --info         print Dove's information
+1. update, -u, --update     update dove and extensions
+1. switch, -s, --switch     check or switch Dove's current language mode
+1. fix, -f, --fix           fixes Dove's preferences
+1. -v, --verbose            increase output verbosity
