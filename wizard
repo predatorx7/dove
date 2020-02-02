@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 DOVE_CACHE_PATH="$(pwd)/.dove_cache"
 DOVE_LOCK_FILE="$DOVE_CACHE_PATH/dove.lock"
 
@@ -8,18 +9,20 @@ function acquire_lock() {
     flock -n 99
     RC=$?
     if [ "$RC" != 0 ]; then
-        printf "Dove is already running for locally..\n"
+        printf "Dove installer is already running for locally..\n"
         exit 1
     fi
 }
 
 acquire_lock
 
-if [ $1 == "remove" ]; then
+if [[ $1 == "remove" ]]; then
     if [[ $EUID -ne 0 ]]; then
-        sudo rm $(which dove)
-    else
+        echo "removing dove for $(basename -- ~)"
         rm $(which dove)
+    else
+        echo "removing dove for root"
+        sudo rm $(which dove)
     fi
 elif [[ $EUID -ne 0 ]]; then
     echo "installing dove for $(basename -- ~)"

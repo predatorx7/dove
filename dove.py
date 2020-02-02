@@ -5,7 +5,7 @@
 Dove is a tool for quickly managing projects in a shell like an IDE.
 
 Usage:
-    `dove [flags] <command or option> [arguments]`
+    `dove [options] <command> [argument(s)]`
 
 Commands:
     build, -b, --build       compile packages and dependencies
@@ -38,14 +38,14 @@ from functools import partial
 DOVE_CACHE_PATH = "{}/.dove".format(getcwd())
 DOVE_LOCK_FILE = "{}/dove.lock".format(DOVE_CACHE_PATH)
 DOVE_CONFIG_FILE = "{}/dove_config.yaml".format(DOVE_CACHE_PATH)
-SUPPORTED_LANGUAGE_MODES = ("Auto", "Java", "C++")
+SUPPORTED_LANGUAGE_MODES = ("Auto", "Java", "C++", "Golang", "Dart", "Python")
 CURRENT_MODE = "Auto"
 DEBUG_MODE = False
 VERBOSE_ON = False
 PCLI = (None, None)
 command_args = {'build': '   build, -b, --build       compile packages and dependencies', 'analyse': '    analyse, -a, --analyse   checks for any errors or warnings in file(s)', 'clean': '    clean, -c, --clean       remove compiled/object files and cached files', 'doc': '    doc, -d, --doc           show documentation for an object in file', 'run': '    run, -r, --run           run program and compile if required', 'walk': '    walk, -w, --walk         compile and run program', 'test': '    test, -t, --test         run tests', 'env': "    env, -e, --env           print Dove's workspace environment information",
                 'reset': "    reset, -r, --reset       reset Dove's preferences & environment to default", 'tree': '    tree, -l, --tree, --list list project files & directories as tree', 'extensions': '    ext, -ext, --ext         manage extensions', 'info': "    info, -i, --info         print Dove's information", 'update': '    update, -u, --update     update dove and extensions', 'switch': "    switch, -s, --switch     check or switch Dove's current language mode", 'fix': "    fix, -f, --fix                fixes Dove's preferences", 'help': __doc__}
-__usage__ = """\n    `dove [flags] <command or option> [arguments]`
+__usage__ = """\n    `dove [flags] <command> [argument(s)]`
 
 Commands:
     build, -b, --build       compile packages and dependencies
@@ -68,8 +68,6 @@ Commands:
 Use \"dove help <command>\" for more information about a command."""
 
 # Actions
-
-
 class DoveAction(argparse.Action):
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         if nargs is not None:
@@ -97,9 +95,9 @@ class HelpAction(argparse.Action):
             print(help_message)
             exit(0)
         else:
-            print(__doc__)
             print("{}: error: unrecognized argument(s): {}".format(
                 argv[0], val))
+            print(__doc__)
             exit(1)
         setattr(namespace, self.dest, val)
 # !
@@ -119,6 +117,7 @@ def debug_state():
             dprint('{}: {}'.format(i, state_vars[i]),)
 
 
+# obsolete
 def print_help(val):
     if val == 'help':
         print(__doc__)
@@ -203,6 +202,7 @@ def handle_commands():
 
 class YamlControl():
     def create_config():
+        comment0 = "# You may freely edit this file. See commented blocks below for\n# instructionssome & examples on how to customize the project.\n# (If you delete it and reopen the project it will be recreated.)\n"
         comment1 = "# Specifies Dove's language mode\n"
         config1 = {
             'current mode': 'auto',
@@ -217,6 +217,7 @@ class YamlControl():
             'project name': None,
         }
         with open(DOVE_CONFIG_FILE, 'w+') as fstreamW:
+            fstreamW.write(comment0)
             fstreamW.write(comment1)
             yaml.dump(config1, fstreamW, default_flow_style=False,
                       allow_unicode=True)
@@ -318,9 +319,6 @@ def cli_args() -> tuple:
                         help="show this message", default='help', action=HelpAction)
     args = parser.parse_args()
     dprint(args)
-    if args.verbose:
-        global VERBOSE_ON
-        VERBOSE_ON = True
     return (parser, args)
 
 

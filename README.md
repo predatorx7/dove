@@ -6,7 +6,7 @@ Dove is a tool for quickly managing projects in a shell like an IDE
 
 Use this pattern when using in a shell:
 
-`dove [flags] <command or option> [arguments]`
+`dove [options] <command> [arguments]`
 
 ### To run dove from a directory
 
@@ -17,11 +17,19 @@ $/path/to/dove_dir/dove.py [command] [arguments..]
 
 ### To install for user
 
-`./install`
+`./wizard`
 
 ### To install for all (root)
 
-`sudo ./install`
+`sudo ./wizard`
+
+### To remove for user
+
+`./wizard remove`
+
+### To remove for all (root)
+
+`sudo ./wizard remove`
 
 ## Available Commands
 
