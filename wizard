@@ -3,6 +3,12 @@
 DOVE_CACHE_PATH="$(pwd)/.dove_cache"
 DOVE_LOCK_FILE="$DOVE_CACHE_PATH/dove.lock"
 
+# removing cache
+function rmCache() {
+    rm -r $DOVE_CACHE_PATH
+    exit 0
+}
+
 function acquire_lock() {
     mkdir -p $DOVE_CACHE_PATH
     exec 99>"$DOVE_LOCK_FILE"
@@ -14,26 +20,52 @@ function acquire_lock() {
     fi
 }
 
+function askPrompt() {
+    message=$1
+    while true; do
+        read -p "$message " yn
+        case $yn in
+        [Yy]*) break ;;
+        [Nn]*)
+            rmCache
+            exit
+            ;;
+        *) echo "Please answer yes or no." ;;
+        esac
+    done
+}
+
 acquire_lock
+
+printf "Note: Dove implementation in python & shell is archived.\n\n"
 
 if [[ $1 == "remove" ]]; then
     if [[ $EUID -ne 0 ]]; then
-        echo "removing dove for $(basename -- ~)"
+        echo "removing Dove for $(basename -- ~)"
         rm $(which dove)
     else
-        echo "removing dove for root"
+        echo "removing Dove for root"
         sudo rm $(which dove)
     fi
-elif [[ $EUID -ne 0 ]]; then
-    echo "installing dove for $(basename -- ~)"
-    cp ./dove.py ~/bin/dove
-    echo "done"
+elif [[ $1 == "install" ]]; then
+    printf "Wizard only supports Dove-python installation at this moment..\n"
+    askPrompt "Do you want to continue? (Y/n)"
+    if [[ $EUID -ne 0 ]]; then
+        echo "installing Dove-python for $(basename -- ~)"
+        cp ./archive/dove.py ~/bin/dove
+        echo "done"
+    else
+        echo "installing Dove-python as root"
+        sudo cp ./archive/dove.py /bin/dove
+        echo "done"
+    fi
+elif [[ $1 == "repair" ]]; then
+    printf "Feature not implemented yet.\n"
+elif [[ $1 == "info" ]]; then
+    printf "Wizard is Dove's installation utility ;)\n...\n"
 else
-    echo "installing dove as root"
-    sudo cp ./dove.py /bin/dove
-    echo "done"
+    echo "Error: unrecognized or no argument(s) provided"
+    echo "Usage: wizard <install or repair or remove>"
 fi
 
-# removing cache
-rm -r $DOVE_CACHE_PATH
-exit 0
+rmCache

@@ -1,8 +1,0 @@
-# Specifies Dove's language mode
-current mode: auto
-# Main file to load automatically (if blank then it'll be chosen
-# based on language or parameters)
-main file: null
-# Project directory
-project directory: .
-project name: null
