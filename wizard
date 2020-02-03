@@ -62,7 +62,12 @@ elif [[ $1 == "install" ]]; then
 elif [[ $1 == "repair" ]]; then
     printf "Feature not implemented yet.\n"
 elif [[ $1 == "info" ]]; then
-    printf "Wizard is Dove's installation utility ;)\n...\n"
+    printf "Wizard is Dove's utility ;)\n"
+    printf "It can be used for both project source code management & Installing-removing dove for end users.\n...\n"
+elif [[ $1 == "dev" ]]; then
+    chmod +x ./wizardev
+    ./wizardev
+    exit
 else
     echo "Error: unrecognized or no argument(s) provided"
     echo "Usage: wizard <install or repair or remove>"

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+DOVE_CACHE_PATH="$(pwd)/.dove_cache"
+DOVE_LOCK_FILE="$DOVE_CACHE_PATH/deve.lock"
+
+# removing cache
+function rmCache() {
+    rm -r $DOVE_CACHE_PATH
+    exit 0
+}
+
+function acquire_lock() {
+    mkdir -p $DOVE_CACHE_PATH
+    exec 99>"$DOVE_LOCK_FILE"
+    flock -n 99
+    RC=$?
+    if [ "$RC" != 0 ]; then
+        printf "Dove installer is already running for locally..\n"
+        exit 1
+    fi
+}
+
+acquire_lock
+
+printf "Switched to development-mode.\n(For now it uses Makefile internally)\n...\n"
+while true; do
+    printf "[wizard] waiting for command\n"
+    read -p "reply < " reply
+    case $reply in
+    "quit"|"exit"|"q") 
+        rmCache
+        exit 
+        ;;
+    "clear") clear ;;
+    *)
+        make $reply
+        ;;
+    *) printf "Please choose a valid command. For help use: help <command>\n" ;;
+    esac
+done
