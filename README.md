@@ -6,30 +6,9 @@ Dove is a tool for quickly managing projects in a shell like an IDE
 
 Use this pattern when using in a shell:
 
-`dove [options] <command> [arguments]`
-
-### To run dove from a directory
-
 ```shell
-$chmod +x /path/to/dove_dir/dove.py
-$/path/to/dove_dir/dove.py [command] [arguments..]
+dove [options] <command> [arguments]
 ```
-
-### To install for user
-
-`./wizard`
-
-### To install for all (root)
-
-`sudo ./wizard`
-
-### To remove for user
-
-`./wizard remove`
-
-### To remove for all (root)
-
-`sudo ./wizard remove`
 
 ## Available Commands
 
@@ -49,3 +28,17 @@ $/path/to/dove_dir/dove.py [command] [arguments..]
 1. switch, -s, --switch     check or switch Dove's current language mode
 1. fix, -f, --fix           fixes Dove's preferences
 1. -v, --verbose            increase output verbosity
+
+## Using Wizard
+
+Dove's installation tool.
+
+Commands you can use: install, remove, info
+
+### For user
+
+`./wizard <command>`
+
+### For all (root)
+
+`sudo ./wizard <command>`
